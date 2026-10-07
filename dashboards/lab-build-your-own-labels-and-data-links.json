@@ -1,0 +1,785 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TESTDATA",
+      "label": "TestData",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-testdata-datasource",
+      "pluginName": "TestData"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-testdata-datasource",
+      "name": "TestData",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Guided enablement lab: each exercise pairs a raw 'before' panel to edit live with steps and a finished answer. Uses TestData services Payments, Offers, Auth, Rewards, Checkout.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Start here",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 1
+      },
+      "id": 12,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "| In Splunk you did… | In Grafana you use… |\n|---|---|\n| `eval status=case(avail>=99.8,\"BAU\",…)` / `rangemap` | **Value mappings** (Range / Value / Regex / Special) |\n| Color formatting in table XML | **Thresholds** + cell type *Colored background* |\n| Per-column formatting | **Field overrides** (match by field name) |\n| `<drilldown><link>` | **Data links** on a field or panel |\n| `$click.value$`, `$row.field$` | `${__value.raw}`, `${__data.fields.Field}` |\n| Tokens `$tok$` | Dashboard **variables** `$var` |\n\n**Key idea:** labeling happens at *display time* — the query stays the same, and only the presentation changes.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Splunk → Grafana translation",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 1
+      },
+      "id": 11,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "1. **Ex 1 — Value mappings** (~5 min): turn a number into BAU / Warning / Critical\n2. **Ex 2 — Thresholds & cell coloring** (~5 min): one value, two presentations\n3. **Ex 3 — Data links** (~10 min): click a service, then land on its detail dashboard\n\n**How to edit a panel:** hover the 🛠 panel → press **e** (or ⋮ → *Edit*). The options search box at the top right of the editor is your friend: type *mapping*, *threshold*, or *link*.\n\nCompare your result with the ✅ panel. If you need to start over, discard your changes.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Lab agenda",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 10
+      },
+      "id": 14,
+      "panels": [],
+      "title": "Ex 1 — Value mappings",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 11
+      },
+      "id": 6,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "1. Edit **🛠 Your turn — raw availability**\n2. Find **Value mappings** → *Add value mappings*\n3. Add **Range** 99.8 → 100 = `BAU`, color **blue**\n4. Add **Range** 99 → 99.8 = `Warning`, color **orange**\n5. Add **Range** 0 → 99 = `Critical`, color **red**\n6. Add **Special** *Null + NaN* = `No Data`, color **grey**\n7. Under **Stat styles**, set *Color mode* = **Background gradient**\n8. Under **Standard options**, set *Color scheme* = **From thresholds (by value)**. The panel starts on a fixed *Text* color, and that hides the mapping colors\n\n💡 The query never changed, so the raw number is still there in tooltips and alerts.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Steps: number → BAU / Warning / Critical",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "text",
+            "mode": "fixed"
+          },
+          "decimals": 2,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 11
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Availability$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "csvContent": "Service,Availability\nPayments,99.95\nOffers,99.40\nAuth,98.70\nRewards,99.99\nCheckout,",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "🛠 Your turn — raw availability",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 99.8,
+                "result": {
+                  "color": "blue",
+                  "index": 0,
+                  "text": "BAU"
+                },
+                "to": 100
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99,
+                "result": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "Warning"
+                },
+                "to": 99.8
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 2,
+                  "text": "Critical"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "match": "null+nan",
+                "result": {
+                  "color": "#888888",
+                  "index": 3,
+                  "text": "No Data"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 11
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^Availability$/",
+          "values": true
+        },
+        "showPercentChange": false,
+        "textMode": "value_and_name",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "csvContent": "Service,Availability\nPayments,99.95\nOffers,99.40\nAuth,98.70\nRewards,99.99\nCheckout,",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "✅ Answer — mapped status",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 15,
+      "panels": [],
+      "title": "Ex 2 — Thresholds & cell coloring",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 21
+      },
+      "id": 9,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "1. Edit **🛠 Your turn — plain table**\n2. **Add field override** → *Fields with name* = `Availability`\n   - Unit = **Percent (0-100)**\n   - Thresholds: red base, **orange 99**, **blue 99.8**\n   - Color scheme = **From thresholds**\n   - Cell type = **Colored background**\n3. **Add field override** → *Fields with name* = `Status`\n   - Add the same **value mappings** as Ex 1\n   - Cell type = **Colored background**\n\n💡 Both columns come from the *same number*. That's one value with two presentations, and no extra query.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Steps: color a table column",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 21
+      },
+      "id": 8,
+      "options": {
+        "cellHeight": "md",
+        "showHeader": true,
+        "zebraStriping": false
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "csvContent": "Service,Availability,Status\nPayments,99.95,99.95\nOffers,99.40,99.40\nAuth,98.70,98.70\nRewards,99.99,99.99\nCheckout,,",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "🛠 Your turn — plain table",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Availability"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 99
+                    },
+                    {
+                      "color": "blue",
+                      "value": 99.8
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 99.8,
+                      "result": {
+                        "color": "blue",
+                        "index": 0,
+                        "text": "BAU"
+                      },
+                      "to": 100
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 99,
+                      "result": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "Warning"
+                      },
+                      "to": 99.8
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "color": "red",
+                        "index": 2,
+                        "text": "Critical"
+                      },
+                      "to": 99
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "match": "null+nan",
+                      "result": {
+                        "color": "#888888",
+                        "index": 3,
+                        "text": "No Data"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 21
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "md",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Availability"
+          }
+        ],
+        "zebraStriping": false
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "csvContent": "Service,Availability,Status\nPayments,99.95,99.95\nOffers,99.40,99.40\nAuth,98.70,98.70\nRewards,99.99,99.99\nCheckout,,",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "✅ Answer — styled table",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 30
+      },
+      "id": 16,
+      "panels": [],
+      "title": "Ex 3 — Data links",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 31
+      },
+      "id": 10,
+      "options": {
+        "content": "1. Edit **🛠 Your turn — services without links**\n2. **Add field override** → *Fields with name* = `Service` → **Data links** → *Add link*\n3. Title: `View service logs →`\n4. URL (type `$` to open the variable picker):\n   `/d/jemz7s9/service-detail-e28094-logs?var-service=${__data.fields.Service}&${__url_time_range}`\n5. Leave *Open in new tab* off for in-app drill-downs; turn it on for external tools\n6. Save the panel and click **Auth**. The detail dashboard opens with Auth and the same time range already selected\n\n**Bonus:** add `Open runbook →` with `https://runbooks.example.com/${__data.fields.Service}`, or a ServiceNow search link",
+        "mode": "markdown"
+      },
+      "pluginVersion": "",
+      "targets": [],
+      "title": "Steps: build a drill-down link",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 31
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "md",
+        "showHeader": true
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "csvContent": "Service,Availability\nPayments,99.95\nOffers,99.40\nAuth,98.70\nRewards,99.99",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "🛠 Your turn — services without links",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "View service logs →",
+                    "url": "/d/jemz7s9/service-detail-e28094-logs?var-service=${__data.fields.Service}&${__url_time_range}"
+                  },
+                  {
+                    "targetBlank": true,
+                    "title": "Open runbook →",
+                    "url": "https://runbooks.example.com/${__data.fields.Service}"
+                  },
+                  {
+                    "targetBlank": true,
+                    "title": "Search tickets (ServiceNow) →",
+                    "url": "https://example.service-now.com/search?q=${__data.fields.Service}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 31
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "md",
+        "showHeader": true
+      },
+      "pluginVersion": "",
+      "targets": [
+        {
+          "csvContent": "Service,Availability\nPayments,99.95\nOffers,99.40\nAuth,98.70\nRewards,99.99",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "✅ Answer — linked services",
+      "type": "table"
+    },
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 40
+      },
+      "id": 3,
+      "options": {
+        "content": "| Variable | Gives you |\n|---|---|\n| `${__data.fields.Service}` | Any column in the clicked row |\n| `${__field.labels.job}` | A label on the clicked series |\n| `${__value.raw}` | The clicked value, unformatted |\n| `${__url_time_range}` | `from=…&to=…`, which keeps the time range |\n| `${__all_variables}` | Every dashboard variable, passed along |\n\nAdd `:percentencode` for URL-safe values, e.g. `${__data.fields.Service:percentencode}`",
+        "mode": "markdown"
+      },
+      "pluginVersion": "",
+      "targets": [],
+      "title": "Cheat sheet: link variables",
+      "type": "text"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "enablement",
+    "data-links",
+    "value-mappings",
+    "lab"
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Hands-on Lab — Build Your Own Labels & Data Links",
+  "uid": "jeqz4tp"
+}

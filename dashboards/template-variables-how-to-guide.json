@@ -1,0 +1,756 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TESTDATA",
+      "label": "TestData",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-testdata-datasource",
+      "pluginName": "TestData"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-testdata-datasource",
+      "name": "TestData",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "A hands-on demo for learning Grafana template variables. Follow the step-by-step instructions embedded in the dashboard to add your first variable.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "liveNow": false,
+  "panels": [
+    {
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## Welcome to the Template Variables Demo\nThis dashboard uses **Grafana TestData** to show realistic panels. The panels below are hardcoded to a specific \"server\" right now — no variables yet.\n\nScroll down to follow the **step-by-step guide** and learn how to replace those hardcoded values with a **template variable**, so users can switch servers from a dropdown at the top of the dashboard.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "👋 Welcome",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Hardcoded to server-prod-01. After adding a variable, the title and query will reference $server instead.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "server-prod-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "max": 90,
+          "min": 10,
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "CPU Usage – server-prod-01",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Hardcoded to server-prod-01. After adding a variable, this will respond to the $server dropdown.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "server-prod-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "max": 85,
+          "min": 30,
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Memory Usage – server-prod-01",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Hardcoded stat panel. Will use $server after adding the variable.",
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "server-prod-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "max": 500,
+          "min": 100,
+          "range": false,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Active Connections – server-prod-01",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Hardcoded stat panel. Will use $server after adding the variable.",
+      "fieldConfig": {
+        "defaults": {
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 8,
+        "y": 9
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "server-prod-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "max": 2000,
+          "min": 500,
+          "range": false,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Request Rate – server-prod-01",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Hardcoded stat panel. Will use $server after adding the variable.",
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 16,
+        "y": 9
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "server-prod-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "max": 5,
+          "min": 0,
+          "range": false,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Error Rate – server-prod-01",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Hardcoded stat panel. Will use $server after adding the variable.",
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 8,
+        "x": 0,
+        "y": 18
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "server-prod-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "max": 100,
+          "min": 99,
+          "range": false,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Uptime – server-prod-01",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 15,
+      "title": "📖 How-To Guide: Adding Template Variables",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "id": 8,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "---\n## 📖 How to Add a Template Variable to This Dashboard\n\nRight now every panel title and query is hardcoded to **server-prod-01**. The steps below walk you through creating a <code>&#36;server</code> variable so any viewer can pick the server they care about from a dropdown.\n\n⏱️ **Total time: ~3 minutes** · Tip: open this dashboard in a second tab so you can read the steps while editing.\n\n> **Why bother?** Template variables let one dashboard serve many servers, namespaces, or environments — without duplicating panels.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Step-by-Step: Adding Template Variables",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "id": 9,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### ① Open the Variable Editor\n\n1. Click the **⋮ (kebab / three-dot) menu** at the top-right of the dashboard toolbar.\n2. Select **Dashboard settings** (or press `d` then `s`).\n3. In the left sidebar, choose **Variables**.\n4. Click the blue **+ Add variable** button.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Step 1 – Open Variable Settings",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 36
+      },
+      "id": 10,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### ② Configure the Variable (≈1 min)\n\nPick **Custom** as the type, then copy/paste each value:\n\n| Field | Value to paste |\n|---|---|\n| **Name** | <code>server</code> |\n| **Label** | <code>Server</code> |\n| **Custom options** | <code>server-prod-01,server-prod-02,server-staging-01</code> |\n\n✅ Check the **Preview of values** shows 3 servers, then click **Back to dashboard**.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Step 2 – Configure the Variable",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 36
+      },
+      "id": 11,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### ③ Use the Variable in a Panel Title (≈30 sec)\n\n1. Hover the **CPU Usage – server-prod-01** panel and press <code>e</code> (or ⋮ menu → **Edit**).\n2. In **Title**, replace <code>server-prod-01</code> with <code>&#36;server</code>.\n3. Click **Back to dashboard**.\n\n✅ The title now shows whatever is picked in the **Server** dropdown.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Step 3 – Use the Variable in a Panel Title",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 44
+      },
+      "id": 12,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### ④ Use the Variable in a Query (≈30 sec)\n\n1. Edit the same CPU panel again.\n2. In the query editor, set **Alias** to <code>&#36;server</code>.\n3. Click **Back to dashboard** — the legend now follows the dropdown.\n\n💡 With a real datasource like Prometheus, the same idea is a label filter:\n<pre>rate(http_requests_total{instance=\"&#36;server\"}[&#36;__rate_interval])</pre>\n\n⭐ **Bonus:** repeat steps ③–④ on the other panels.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Step 4 – Use the Variable in a Query",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 44
+      },
+      "id": 13,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### ⑤ Verify the Dropdown Appears\n\n1. **Save** the dashboard (`Ctrl+S` / `Cmd+S`).\n2. You should now see a **Server** dropdown at the top of the dashboard.\n3. Switch between values — all panels with <code>&#36;server</code> in their title or query will update automatically.\n\n🎉 You’ve added your first template variable!",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Step 5 – Verify the Dropdown",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 52
+      },
+      "id": 14,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### 🚀 Going Further\n\n| Variable Type | Best Used For |\n|---|---|\n| **Custom** | Static lists (environments, regions) |\n| **Query** | Dynamic lists from your datasource (pods, hosts) |\n| **Datasource** | Switch the data source on the fly |\n| **Interval** | Let users pick time bucket size |\n| **Ad hoc filters** | Free-form label filtering (Prometheus/Loki) |\n\nVariables can also **chain** — e.g. `$namespace` filters the options available in `$pod`.\n\n📖 [Full docs: grafana.com/docs/grafana/latest/dashboards/variables/](https://grafana.com/docs/grafana/latest/dashboards/variables/)",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Going Further – Variable Types",
+      "type": "text"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "training",
+    "template-variables",
+    "testdata"
+  ],
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Template Variables – Demo & How-To Guide",
+  "uid": "jettdm8"
+}
