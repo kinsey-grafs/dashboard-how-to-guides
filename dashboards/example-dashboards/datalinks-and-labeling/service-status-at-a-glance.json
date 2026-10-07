@@ -1,0 +1,1560 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TESTDATA",
+      "label": "TestData",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-testdata-datasource",
+      "pluginName": "TestData"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-testdata-datasource",
+      "name": "TestData",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Illustrates how Grafana labels and value mappings can signify service status at a glance.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "title": "Service Availability Table",
+      "type": "row"
+    },
+    {
+      "description": "**Technique: Field Overrides — Dual Column Styling**\n\nThis table applies two independent configurations to the same underlying data using **field overrides** (matched by column name). The **Availability** column uses *threshold-based cell background coloring* — the background shifts automatically from red → yellow → green as values cross defined thresholds (<99%, <99.8%, ≥99.8%). The **Status** column uses *range value mappings* to translate the same raw numbers into human-readable text labels with custom colors. This demonstrates that a single data value can be presented simultaneously as a metric *and* a categorical status label — without duplicating data or queries.",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 10,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### One value, two presentations\n- **Availability** → thresholds color the cell\n- **Status** → value mappings turn the number into a word\n- Same data, no duplicate queries\n\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Real-time availability % per service. Color shows health against SLO thresholds.",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Availability"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 99
+                    },
+                    {
+                      "color": "blue",
+                      "value": 99.8
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "none"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "from": 0,
+                      "result": {
+                        "color": "red",
+                        "index": 0,
+                        "text": "Critical"
+                      },
+                      "to": 99
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 99,
+                      "result": {
+                        "color": "orange",
+                        "index": 1,
+                        "text": "Warning"
+                      },
+                      "to": 99.8
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "from": 99.8,
+                      "result": {
+                        "color": "blue",
+                        "index": 2,
+                        "text": "BAU"
+                      },
+                      "to": 100
+                    },
+                    "type": "range"
+                  },
+                  {
+                    "options": {
+                      "match": "empty",
+                      "result": {
+                        "color": "#888888",
+                        "index": 3,
+                        "text": "No Data"
+                      }
+                    },
+                    "type": "special"
+                  },
+                  {
+                    "options": {
+                      "match": "null+nan",
+                      "result": {
+                        "color": "#888888",
+                        "index": 4,
+                        "text": "No Data"
+                      }
+                    },
+                    "type": "special"
+                  }
+                ]
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "thresholds"
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "oneClick": false,
+                    "targetBlank": false,
+                    "title": "View service logs →",
+                    "url": "/d/jemz7s9/service-detail-e28094-logs?var-service=${__data.fields.Service}&${__url_time_range}"
+                  },
+                  {
+                    "targetBlank": true,
+                    "title": "Open runbook →",
+                    "url": "https://runbooks.example.com/${__data.fields.Service}"
+                  },
+                  {
+                    "targetBlank": true,
+                    "title": "Search tickets (ServiceNow) →",
+                    "url": "https://example.service-now.com/search?q=${__data.fields.Service}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "md",
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Availability"
+          }
+        ],
+        "zebraStriping": false
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "csvContent": "Service,Availability,Status\nPayments,99.95,99.95\nOffers,99.40,99.40\nAuth,98.70,98.70\nRewards,99.99,99.99\nCheckout,,",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "Service availability",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 15
+      },
+      "id": 21,
+      "title": "Current Status at a Glance",
+      "type": "row"
+    },
+    {
+      "description": "**Technique: Stat Panels + Value Mappings**\n\nEach panel displays one service state as a large label. Value mappings convert the raw availability percentage into BAU, Warning, or Critical. Threshold-based background coloring makes the state visually unmistakable. This pattern is ideal for NOC-style status boards or executive dashboards. Graph mode = Area adds the availability trend behind each label, so one panel carries the name, the status, and the recent history.",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 11,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Status in under a second\n- Number → **BAU / Warning / Critical** via value mappings\n- Background color makes it unmistakable\n- Area graph adds the trend behind the label",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Availability trend for Payments. Sparkline shows last 20 samples; label reflects current status.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Critical"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99,
+                "result": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "Warning"
+                },
+                "to": 99.8
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99.8,
+                "result": {
+                  "color": "blue",
+                  "index": 2,
+                  "text": "BAU"
+                },
+                "to": 100
+              },
+              "type": "range"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 20
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Payments",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.9,99.88,99.92,99.85,99.91,99.82,99.88,99.92,99.88,99.9,99.95,99.88,99.9,99.92,99.85,99.9,99.88,99.92,99.9,99.95"
+        }
+      ],
+      "title": "Payments",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Availability trend for Offers. Sparkline shows last 20 samples; label reflects current status.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Critical"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99,
+                "result": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "Warning"
+                },
+                "to": 99.8
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99.8,
+                "result": {
+                  "color": "blue",
+                  "index": 2,
+                  "text": "BAU"
+                },
+                "to": 100
+              },
+              "type": "range"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 20
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Offers",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.9,99.85,99.7,99.45,99.2,99.05,98.95,99.1,99.3,99.6,99.82,99.88,99.85,99.7,99.4,99.3,99.6,99.82,99.88,99.40"
+        }
+      ],
+      "title": "Offers",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Availability trend for Auth. Sparkline shows last 20 samples; label reflects current status.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Critical"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99,
+                "result": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "Warning"
+                },
+                "to": 99.8
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99.8,
+                "result": {
+                  "color": "blue",
+                  "index": 2,
+                  "text": "BAU"
+                },
+                "to": 100
+              },
+              "type": "range"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 20
+      },
+      "id": 18,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Auth",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.5,99.2,99.0,98.8,98.5,98.3,98.5,98.7,98.9,99.1,99.3,99.0,98.8,98.6,98.5,98.7,98.9,99.2,99.4,98.70"
+        }
+      ],
+      "title": "Auth",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Availability trend for Rewards. Sparkline shows last 20 samples; label reflects current status.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Critical"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99,
+                "result": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "Warning"
+                },
+                "to": 99.8
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99.8,
+                "result": {
+                  "color": "blue",
+                  "index": 2,
+                  "text": "BAU"
+                },
+                "to": 100
+              },
+              "type": "range"
+            }
+          ],
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 20
+      },
+      "id": 19,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Rewards",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.95,99.99,99.92,99.95,99.88,99.95,99.99,99.97,99.92,99.95,99.97,99.99,99.92,99.95,99.88,99.95,99.99,99.97,99.92,99.95"
+        }
+      ],
+      "title": "Rewards",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 22,
+      "title": "Detailed Breakdown",
+      "type": "row"
+    },
+    {
+      "description": "**Technique: Bar Gauge Thresholds & Donut Chart Aggregation**\n\nThe **Bar Gauge** applies the same threshold steps as a color gradient across each service bar, making it easy to compare where each service sits relative to SLO boundaries (scaled from 97-100% to amplify differences). The **Donut Chart** aggregates the fleet into status buckets using fixed series colors — useful when the question is *how many* services are impacted, not which specific value they hold. Both panels use reduceOptions to collapse time series into a single representative value per series.",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 29
+      },
+      "id": 12,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Compare vs. count\n- **Bar gauge** — where each service sits against the SLO bands\n- **Donut** — how *many* services are impacted",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Horizontal bars show each service's availability %. Color bands reflect Critical (<99%), Warning (<99.8%), and BAU (≥99.8%) thresholds.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "max": 100,
+          "min": 97,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 0,
+        "y": 32
+      },
+      "id": 6,
+      "options": {
+        "displayMode": "gradient",
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "maxVizHeight": 300,
+        "minVizHeight": 16,
+        "minVizWidth": 8,
+        "namePlacement": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showUnfilled": true,
+        "sizing": "auto",
+        "textMode": "auto",
+        "valueMode": "color"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Payments",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.95"
+        },
+        {
+          "alias": "Offers",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "B",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.40"
+        },
+        {
+          "alias": "Auth",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "C",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "98.70"
+        },
+        {
+          "alias": "Rewards",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "D",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.99"
+        }
+      ],
+      "title": "Service Availability — Bar Gauge",
+      "type": "bargauge"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Snapshot of how many services fall into each status category right now.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "custom": {
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            }
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "BAU"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Warning"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "orange",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Critical"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 12,
+        "x": 12,
+        "y": 32
+      },
+      "id": 7,
+      "options": {
+        "displayLabels": [
+          "name",
+          "percent"
+        ],
+        "legend": {
+          "displayMode": "table",
+          "overflow": "ellipsis",
+          "placement": "right",
+          "showLegend": true,
+          "values": [
+            "value",
+            "percent"
+          ]
+        },
+        "pieType": "donut",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "sort": "desc",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "BAU",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "2"
+        },
+        {
+          "alias": "Warning",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "B",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "1"
+        },
+        {
+          "alias": "Critical",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "C",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "1"
+        }
+      ],
+      "title": "Services by Status",
+      "type": "piechart"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 42
+      },
+      "id": 23,
+      "title": "Status History & Legend",
+      "type": "row"
+    },
+    {
+      "description": "**Technique: State Timeline — Thresholds + Value Mappings Over Time**\n\nThe state timeline renders each service as a horizontal band, with segments colored by **thresholds** applied to availability values at each point in time. **Value mappings** overlay the text labels (BAU / Warning / Critical) directly onto each colored segment — combining numeric threshold logic with human-readable status in one view. This panel is purpose-built for showing *state transitions over time*, making it ideal for incident retrospectives, SLA reporting, or demonstrating how services degrade and recover across a time window.",
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 43
+      },
+      "id": 13,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Status over time\n- One band per service, colored + labeled at every point\n- Built for retrospectives and SLA reviews",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Simulated state history showing how each service availability has transitioned between BAU, Warning, and Critical over time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisPlacement": "auto",
+            "fillOpacity": 70,
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineWidth": 0,
+            "spanNulls": false
+          },
+          "mappings": [
+            {
+              "options": {
+                "from": 0,
+                "result": {
+                  "color": "red",
+                  "index": 0,
+                  "text": "Critical"
+                },
+                "to": 99
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99,
+                "result": {
+                  "color": "orange",
+                  "index": 1,
+                  "text": "Warning"
+                },
+                "to": 99.8
+              },
+              "type": "range"
+            },
+            {
+              "options": {
+                "from": 99.8,
+                "result": {
+                  "color": "blue",
+                  "index": 2,
+                  "text": "BAU"
+                },
+                "to": 100
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 46
+      },
+      "id": 8,
+      "options": {
+        "alignValue": "left",
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "fillOpacity": 70,
+        "legend": {
+          "displayMode": "list",
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "mergeValues": false,
+        "rowHeight": 0.9,
+        "showValue": "always",
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Payments",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.9,99.88,99.92,99.85,99.9,99.92,99.88,99.9,99.92,99.95"
+        },
+        {
+          "alias": "Offers",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "B",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.9,99.85,99.7,99.45,99.2,99.6,99.82,99.9,99.91,99.88"
+        },
+        {
+          "alias": "Auth",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "C",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.5,99.2,99.0,98.8,98.5,98.7,98.9,99.1,99.3,99.5"
+        },
+        {
+          "alias": "Rewards",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "D",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.95,99.99,99.92,99.95,99.88,99.95,99.99,99.97,99.92,99.95"
+        }
+      ],
+      "title": "Status History — State Timeline",
+      "type": "state-timeline"
+    },
+    {
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "id": 9,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"padding:8px\">\n  <h4 style=\"color:#ccc;margin:0 0 10px\">Status Labels</h4>\n  <div style=\"display:flex;gap:8px;margin-bottom:18px\">\n    <span style=\"background:#E02F44;color:white;padding:6px 16px;border-radius:4px;font-weight:700\">Critical</span>\n    <span style=\"background:#FF9900;color:white;padding:6px 16px;border-radius:4px;font-weight:700\">Warning</span>\n    <span style=\"background:#1F60C4;color:white;padding:6px 16px;border-radius:4px;font-weight:700\">BAU</span>\n  </div>\n  <h4 style=\"color:#ccc;margin:0 0 10px\">Threshold Ranges</h4>\n  <div style=\"display:flex;gap:8px\">\n    <span style=\"background:#E02F44;color:white;padding:6px 16px;border-radius:4px;font-weight:700\">&lt; 99%</span>\n    <span style=\"background:#FF9900;color:white;padding:6px 16px;border-radius:4px;font-weight:700\">&lt; 99.8%</span>\n    <span style=\"background:#1F60C4;color:white;padding:6px 16px;border-radius:4px;font-weight:700\">&ge; 99.8%</span>\n  </div>\n</div>",
+        "mode": "html"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "Status Legend & Thresholds",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 63
+      },
+      "id": 24,
+      "title": "Timeseries with Threshold Bands",
+      "type": "row"
+    },
+    {
+      "description": "**Technique: Timeseries with Threshold Bands + Value Mapping Labels**\n\nThis panel uses thresholdsStyle.mode = 'line+area' to render the three status zones as colored background fills — red below 99%, yellow between 99-99.8%, and green above 99.8%. Horizontal lines mark the exact threshold boundaries so their positions are immediately readable on the Y axis.\n\n**Value mappings** (range type) are applied via fieldConfig.defaults to translate numeric values into status labels at every point of contact with the viewer: Y-axis tick labels now read BAU, Warning, and Critical instead of raw percentages. Tooltip on hover shows the status label alongside the series name. Overrides assign each series a thick (3px), high-contrast line color chosen to remain legible against all three colored background zones.\n\nThe Y axis is constrained to 97-100.5% to amplify differences between services that would otherwise appear as near-identical flat lines.",
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 64
+      },
+      "id": 14,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### The zones ARE the chart\n- Background fills = the three status bands\n- Y-axis reads **BAU / Warning / Critical**, not numbers\n- Thick lines stay legible on any zone",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Availability % per service plotted over time. Colored background zones show status thresholds; series lines are styled via per-series overrides for contrast.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "max": 100.2,
+          "min": 97,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.8
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 68
+      },
+      "id": 15,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.3.0-36978054224",
+      "targets": [
+        {
+          "alias": "Payments",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.9,99.88,99.92,99.85,99.91,99.82,99.88,99.92,99.88,99.9,99.95,99.88,99.9,99.92,99.85,99.9,99.88,99.92,99.9,99.95"
+        },
+        {
+          "alias": "Offers",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "B",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.9,99.85,99.7,99.45,99.2,99.05,98.95,99.1,99.3,99.6,99.82,99.88,99.85,99.7,99.4,99.3,99.6,99.82,99.88,99.9"
+        },
+        {
+          "alias": "Auth",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "C",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.5,99.2,99.0,98.8,98.5,98.3,98.5,98.7,98.9,99.1,99.3,99.0,98.8,98.6,98.5,98.7,98.9,99.2,99.4,99.5"
+        },
+        {
+          "alias": "Rewards",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "D",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.95,99.99,99.92,99.95,99.88,99.95,99.99,99.97,99.92,99.95,99.97,99.99,99.92,99.95,99.88,99.95,99.99,99.97,99.92,99.95"
+        },
+        {
+          "alias": "⚠️ Warning (99.8%)",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "E",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8,99.8"
+        },
+        {
+          "alias": "🔴 Critical (99%)",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "F",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99,99"
+        }
+      ],
+      "title": "Service Availability — Threshold Bands",
+      "type": "timeseries"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "Service Status at a Glance",
+  "uid": "je4s977"
+}

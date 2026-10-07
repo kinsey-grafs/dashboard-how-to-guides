@@ -1,0 +1,2640 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_TESTDATA",
+      "label": "TestData",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "grafana-testdata-datasource",
+      "pluginName": "TestData"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "12.0.0"
+    },
+    {
+      "type": "datasource",
+      "id": "grafana-testdata-datasource",
+      "name": "TestData",
+      "version": "1.0.0"
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Real-time health for core platform services. Covers availability, latency, error rates, and infrastructure. Owned by Platform Engineering — oncall: #platform-sre.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 23,
+      "panels": [],
+      "title": "Overview",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "**Scope:** Core platform services &nbsp;·&nbsp; Environment: `$env` &nbsp;·&nbsp; Region: `$region` &nbsp;·&nbsp; Service: `$service`\n\n**Owner:** Platform Engineering &nbsp;|&nbsp; Oncall: **#platform-sre** &nbsp;|&nbsp; [📖 Runbook](https://runbook.internal/platform) &nbsp;|&nbsp; [🚨 File Incident](https://pagerduty.com) &nbsp;|&nbsp; [💬 #platform-incidents](https://slack.com)",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "% of time the service responded successfully over the selected window. SLO target: 99.9%. Red = SLO breach.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 99
+              },
+              {
+                "color": "blue",
+                "value": 99.9
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 3
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "instant": false,
+          "max": 100,
+          "min": 99.91,
+          "queryType": "range",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 99.97,
+          "stringInput": "99.97"
+        }
+      ],
+      "title": "Availability",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "% of requests returning 5xx errors. SLO budget: <1%. >5% triggers P1 incident.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 2,
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 3
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "instant": false,
+          "max": 0.8,
+          "min": 0,
+          "queryType": "range",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 0.31,
+          "stringInput": "0.31"
+        }
+      ],
+      "title": "Error Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "99th-percentile request duration. Warn: >200 ms. Alert: >500 ms. Correlate spikes with deploy events.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 200
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          },
+          "unit": "ms"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 3
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "instant": false,
+          "max": 180,
+          "min": 80,
+          "queryType": "range",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 147,
+          "stringInput": "147"
+        }
+      ],
+      "title": "P99 Latency",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Total inbound requests per second across all selected services. No threshold color is applied here — throughput alone is neither good nor bad without a baseline. A spike could mean healthy growth or a traffic flood. Compare against historical trends rather than a fixed threshold.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "fixedColor": "blue",
+            "mode": "fixed"
+          },
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "reqps"
+        }
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 3
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "instant": false,
+          "max": 4000,
+          "min": 1000,
+          "queryType": "range",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 2453,
+          "stringInput": "2453"
+        }
+      ],
+      "title": "Throughput",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Inbound requests per second by service. Sudden drops may indicate an availability issue.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "api-gateway"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "auth-service"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "payment-service"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "D-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "notification-service"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 8
+      },
+      "id": 6,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "api-gateway",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "auth-service",
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "payment-service",
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "notification-service",
+          "range": true,
+          "refId": "D",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Request Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Error % over time. The shaded red area marks the SLO breach zone (>5%). Yellow band = warning zone (1–5%).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 1
+              },
+              {
+                "color": "super-light-red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "api-gateway"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "auth-service"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "payment-service"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 8
+      },
+      "id": 7,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "api-gateway",
+          "max": 7,
+          "min": 0,
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 1.5
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "auth-service",
+          "max": 5,
+          "min": 0,
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk",
+          "startValue": 0.8
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "payment-service",
+          "max": 9,
+          "min": 0,
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk",
+          "startValue": 2.5
+        }
+      ],
+      "title": "Error Rate",
+      "type": "timeseries"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 8,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "---\n### 📋 Current Service Status\n_Point-in-time snapshot. For trends, see charts above._",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Latest health check results per service. Drill into a service using the Service filter above.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 170
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Availability (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 99
+                    },
+                    {
+                      "color": "blue",
+                      "value": 99.9
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "P99 Latency (ms)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "ms"
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 200
+                    },
+                    {
+                      "color": "red",
+                      "value": 500
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Error Rate (%)"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "blue",
+                      "value": 0
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 1
+                    },
+                    {
+                      "color": "red",
+                      "value": 5
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.align",
+                "value": "center"
+              },
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "options": {
+                      "Critical": {
+                        "color": "red",
+                        "index": 3
+                      },
+                      "Degraded": {
+                        "color": "yellow",
+                        "index": 1
+                      },
+                      "Healthy": {
+                        "color": "blue",
+                        "index": 0
+                      },
+                      "Warning": {
+                        "color": "orange",
+                        "index": 2
+                      }
+                    },
+                    "type": "value"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "md",
+        "enablePagination": false,
+        "showHeader": true
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "csvContent": "Service,Availability (%),P99 Latency (ms),Error Rate (%),Status\napi-gateway,99.97,147,0.31,Healthy\nauth-service,99.85,203,0.87,Degraded\npayment-service,99.91,156,0.44,Healthy\nnotification-service,98.72,89,2.14,Warning",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": false,
+          "refId": "A",
+          "scenarioId": "csv_content"
+        }
+      ],
+      "title": "Service Health",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 24,
+      "title": "🔒 Production SLO Monitoring",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "SLO burn rate (error budget consumption rate). 1× = burning exactly on budget. >2× triggers paging. Visible in production only.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line+area"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 1
+              },
+              {
+                "color": "super-light-red",
+                "value": 2
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "api-gateway"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "payment-service"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 10,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-30616302309",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "api-gateway",
+          "max": 2.8,
+          "min": 0,
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 0.8
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "payment-service",
+          "max": 3,
+          "min": 0,
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk",
+          "startValue": 1.3
+        }
+      ],
+      "title": "🔒 SLO Burn Rate — Production Only",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "id": 25,
+      "panels": [],
+      "title": "Services",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 37
+      },
+      "id": 11,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Service Drill-Down\nFiltered to **$service** in **$env** / **$region**. Use the filters above to scope to a specific service. Each chart shows the last selected time range.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Inbound requests per second for the selected service(s). Use this to detect traffic anomalies and confirm deploys.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "reqps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "api-gateway"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "auth-service"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "payment-service"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 40
+      },
+      "id": 12,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max",
+            "min"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "api-gateway",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "auth-service",
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "payment-service",
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Request Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Latency percentiles. P99 > 500 ms = alert. P50 tracks the median user experience. Wide spread between P50 and P99 = tail latency problem.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 200
+              },
+              {
+                "color": "red",
+                "value": 500
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "P50"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "P95"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "P99"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 40
+      },
+      "id": 13,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "p50",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "p95",
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "p99",
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Latency Percentiles (P50 / P95 / P99)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Error % over time for the selected service. SLO: <1%. Consistently >5% = SLO breach. Compare with latency to distinguish error vs slowness.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "area"
+            }
+          },
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": 0
+              },
+              {
+                "color": "super-light-yellow",
+                "value": 1
+              },
+              {
+                "color": "super-light-red",
+                "value": 5
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "api-gateway"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "auth-service"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "payment-service"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 49
+      },
+      "id": 14,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "api-gateway",
+          "max": 8,
+          "min": 0.1,
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk",
+          "startValue": 2
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "auth-service",
+          "max": 6,
+          "min": 0.1,
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk",
+          "startValue": 1.5
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "payment-service",
+          "max": 9,
+          "min": 0.5,
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk",
+          "startValue": 3
+        }
+      ],
+      "title": "Error Rate",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 57
+      },
+      "id": 26,
+      "panels": [],
+      "title": "Infrastructure",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 3,
+        "w": 24,
+        "x": 0,
+        "y": 58
+      },
+      "id": 15,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "### Infrastructure Health\nHost-level resource metrics for **$env** / **$region**. Thresholds: CPU warns at **70%**, alerts at **90%**. Memory warns at **80%**, alerts at **95%**. Correlate spikes here with service latency above.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [],
+      "title": "",
+      "type": "text"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "CPU utilization across hosts. Dashed lines mark Warning (70%) and Critical (90%) thresholds. Sustained >70% warrants scaling review.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "⚠️ Warning (70%)"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "yellow",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "E"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "🛑 Critical (90%)"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 1
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "dash": [
+                    10,
+                    10
+                  ],
+                  "fill": "dash"
+                }
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 61
+      },
+      "id": 16,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "alias": "node-01",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "alias": "node-02",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        },
+        {
+          "alias": "node-03",
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "D",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70,70"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "range": true,
+          "refId": "E",
+          "scenarioId": "csv_metric_values",
+          "stringInput": "90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90,90"
+        }
+      ],
+      "title": "CPU Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "RAM consumption per host as a percentage of total. Warning: 6 GiB / Critical: 7 GiB. Sustained pressure above warning often precedes OOM kills.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 5,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              },
+              {
+                "color": "yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-01"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-02"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "C-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-03"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 61
+      },
+      "id": 17,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-01",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-02",
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-03",
+          "range": true,
+          "refId": "C",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Memory Usage",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Inbound network throughput per host. Unexpected spikes may indicate backup jobs, log shipping storms, or noisy neighbours.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-01"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-02"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 70
+      },
+      "id": 18,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-01",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-02",
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Network Received",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "grafana-testdata-datasource",
+        "uid": "${DS_TESTDATA}"
+      },
+      "description": "Outbound network throughput per host. Sustained elevation above baseline warrants investigation — common causes include bulk data exports, replication lag catch-up, or data exfiltration.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "showValues": false,
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "A-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-01"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "B-series"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "node-02"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 70
+      },
+      "id": 19,
+      "options": {
+        "annotations": {
+          "clustering": -1,
+          "multiLane": false
+        },
+        "legend": {
+          "calcs": [
+            "mean",
+            "max"
+          ],
+          "displayMode": "table",
+          "enableFacetedFilter": false,
+          "overflow": "ellipsis",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-01",
+          "range": true,
+          "refId": "A",
+          "scenarioId": "random_walk"
+        },
+        {
+          "app": "grafana-assistant-app",
+          "datasource": {
+            "type": "grafana-testdata-datasource",
+            "uid": "${DS_TESTDATA}"
+          },
+          "legendFormat": "node-02",
+          "range": true,
+          "refId": "B",
+          "scenarioId": "random_walk"
+        }
+      ],
+      "title": "Network Transmitted",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 79
+      },
+      "id": 27,
+      "panels": [],
+      "title": "Ownership",
+      "type": "row"
+    },
+    {
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 0,
+        "y": 80
+      },
+      "id": 20,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## 👥 Team\n\n**Platform Engineering**\n\nSlack: [#platform-sre](https://slack.com)\nEmail: platform-sre@company.com\nManager: Alex Rivera\n\n---\n\n**On-call rotation**\n- 24/7 coverage, 1-week shifts\n- Handoff: Mondays 9 am PT\n- Schedule: [PagerDuty](https://pagerduty.com/schedules)\n\n---\n\n**Last reviewed:** June 2026\n**Dashboard version:** v2.1\n**Source:** [github.com/company/dashboards](https://github.com)",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [],
+      "title": "Team",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 8,
+        "y": 80
+      },
+      "id": 21,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## 📖 Runbooks\n\n**High Error Rate (>1%)**\n[→ Error Rate SLO Burn](https://runbook.internal/error-rate)\n\n**High Latency (P99 >200 ms)**\n[→ Latency SLO Burn](https://runbook.internal/latency)\n\n**Service Unavailable**\n[→ Availability Runbook](https://runbook.internal/availability)\n\n**Node CPU / Memory**\n[→ Infrastructure Issues](https://runbook.internal/node)\n\n**Payment Service**\n[→ Payment Runbook](https://runbook.internal/payment)\n\n---\n\n_All runbooks live in Confluence under [Platform › Runbooks](https://confluence.internal/platform)_",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [],
+      "title": "Runbooks",
+      "type": "text"
+    },
+    {
+      "gridPos": {
+        "h": 12,
+        "w": 8,
+        "x": 16,
+        "y": 80
+      },
+      "id": 22,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "## 📞 Escalation\n\n**Step 1:** Check this dashboard for scope\n**Step 2:** Join **#platform-incidents** on Slack\n**Step 3:** Page on-call via [PagerDuty](https://pagerduty.com)\n**Step 4:** If no response in 5 min → escalate to manager\n\n---\n\n**Severity guide**\n\n| Level | Condition |\n|---|---|\n| P0 | Production down / data loss |\n| P1 | >5% error rate or >500 ms P99 |\n| P2 | Single service degraded |\n| P3 | Non-urgent, business hours |\n\n---\n\n_For postmortems see [Incidents](https://incidents.internal)_",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.0-28666480772",
+      "targets": [],
+      "title": "Escalation Policy",
+      "type": "text"
+    }
+  ],
+  "preload": false,
+  "refresh": "",
+  "schemaVersion": 42,
+  "tags": [
+    "platform",
+    "sre",
+    "service-health"
+  ],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": true,
+        "current": {
+          "text": "staging",
+          "value": "staging"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Environment",
+        "multi": false,
+        "name": "env",
+        "options": [],
+        "query": "prod,staging,dev",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allowCustomValue": true,
+        "current": {
+          "text": "us-east-1",
+          "value": "us-east-1"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "label": "Region",
+        "multi": false,
+        "name": "region",
+        "options": [],
+        "query": "us-east-1,us-west-2,eu-west-1",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "hide": 0,
+        "includeAll": true,
+        "label": "Service",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": "api-gateway,auth-service,payment-service,notification-service",
+        "skipUrlSync": false,
+        "type": "custom",
+        "valuesFormat": "csv"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "browser",
+  "title": "7 - Service Health — Platform Engineering",
+  "uid": "jeml7w9"
+}
